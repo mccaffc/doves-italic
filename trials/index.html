@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Doves Italic — Trials</title>
+<style>
+  @font-face {
+    font-family: "Doves Roman";
+    src: url("fonts/DovesType-Regular.otf") format("opentype");
+    font-display: block;
+  }
+  @font-face {
+    font-family: "EBG It";
+    src: url("fonts/EBGaramond-Italic-VF.ttf") format("truetype-variations");
+    font-weight: 400 800;
+    font-display: block;
+  }
+  @font-face {
+    font-family: "Doves Italic Trial";
+    src: url("fonts/DovesItalic-Trial1.ttf") format("truetype");
+    font-display: block;
+  }
+  @font-face {
+    font-family: "Cormorant It";
+    src: url("fonts/Cormorant-Italic-VF.ttf") format("truetype-variations");
+    font-weight: 400 700;
+    font-display: block;
+  }
+
+  :root {
+    --paper: #f6f2ea;
+    --ink: #1c1a17;
+    --muted: #8a8272;
+    --hairline: #ddd6c8;
+    --roman-size: 19px;
+    --leading: 31px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Doves Roman", serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-kerning: normal;
+    ligatures: common-ligatures;
+  }
+
+  .page { max-width: 620px; margin: 0 auto; padding: 72px 28px 120px; }
+
+  header.masthead { text-align: center; margin-bottom: 26px; }
+  header.masthead h1 {
+    font-size: 40px; font-weight: normal; margin: 0 0 10px;
+    letter-spacing: 0.01em;
+  }
+  .deck {
+    font-family: "EBG It", serif;
+    font-variation-settings: "wght" 500;
+    font-style: oblique -10deg;
+    font-size: 20px; color: var(--ink); margin: 0 0 30px;
+  }
+  .intro {
+    font-size: var(--roman-size); line-height: var(--leading);
+    margin: 0 0 14px; text-align: center; color: var(--ink);
+  }
+  .intro .ital { white-space: nowrap; }
+
+  .rule { border: 0; border-top: 1px solid var(--hairline); margin: 44px 0; }
+
+  /* ---------- panels ---------- */
+  .panel { margin-bottom: 26px; }
+  .spec {
+    font-family: "Doves Roman", serif;
+    font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); text-align: center; margin: 0 0 30px;
+  }
+
+  .ital {
+    font-family: var(--fam, "EBG It", serif);
+    font-variation-settings: "wght" var(--w, 550);
+    font-style: oblique var(--obl, -10deg);
+    font-size: var(--isize, 17.5px);
+    letter-spacing: var(--track, normal);
+  }
+
+  .running {
+    text-align: center; font-size: 13.5px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted); margin: 0 0 26px;
+  }
+  .running.ital { text-transform: none; letter-spacing: 0.06em; font-size: 15.5px; }
+
+  h2.booktitle {
+    text-align: center; font-weight: normal; font-size: 30px;
+    margin: 0 0 6px; letter-spacing: 0.01em;
+  }
+  .actline { text-align: center; margin: 0 0 34px; font-size: 17px; color: var(--ink); }
+
+  p.body {
+    font-size: var(--roman-size); line-height: var(--leading);
+    margin: 0 0 var(--leading); text-align: justify; hyphens: auto;
+  }
+  p.body .ital { letter-spacing: 0; }
+
+  .epigraph {
+    font-size: var(--isize, 17.5px); line-height: var(--leading);
+    text-align: center; max-width: 30em; margin: 40px auto 8px;
+    font-family: var(--fam, "EBG It", serif);
+    font-variation-settings: "wght" var(--w, 550);
+    font-style: oblique var(--obl, -10deg);
+    letter-spacing: var(--track, normal);
+    word-spacing: var(--wsp, normal);
+  }
+  .attrib {
+    text-align: center; font-size: 13px; color: var(--muted); margin: 0 0 40px;
+    font-family: var(--fam, "EBG It", serif);
+    font-variation-settings: "wght" var(--w, 550);
+    font-style: oblique var(--obl, -10deg);
+    letter-spacing: var(--track, normal);
+    word-spacing: var(--wsp, normal);
+  }
+
+  .footnote {
+    font-size: 13.5px; line-height: 21px; color: var(--ink);
+    margin: 34px 0 0; padding-left: 22px; position: relative;
+    font-family: var(--fam, "EBG It", serif);
+    font-variation-settings: "wght" var(--w, 550);
+    font-style: oblique var(--obl, -10deg);
+    letter-spacing: var(--track, normal);
+    word-spacing: var(--wsp, normal);
+  }
+  .footnote .num { position: absolute; left: 0; top: 0; }
+
+  footer.colophon {
+    text-align: center; font-size: 12.5px; color: var(--muted); margin-top: 70px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <h1>The Doves Italic</h1>
+    <p class="deck">eight possible companions for your roman, set in use</p>
+  </header>
+
+  <p class="intro">Each panel below sets the same passages from <span class="ital">Hamlet</span> —
+  a running head, body text with italic emphasis, an epigraph set wholly in italic,
+  and a footnote at small size. Judge the italic as a bookman would: whether its colour
+  sits evenly beside the roman, whether emphasis disappears into the sentence or sings,
+  and whether the small sizes stay sweet.</p>
+
+  <hr class="rule">
+
+  <!-- ================= PANEL 1: EBG 500 @ 7° ================= -->
+  <section class="panel" style="--w:500; --isize:17.5px; --obl:-10deg;">
+    <div class="spec">I · EB Garamond Italic — wght 500 · lean 7°</div>
+    <div class="running ital">Hamlet, Prince of Denmark</div>
+    <h2 class="booktitle">Hamlet, Prince of Denmark</h2>
+    <p class="actline ital">Act III · Scene I</p>
+    <p class="body">To be, or not to be, that is the question: whether &rsquo;tis nobler in the
+    mind to suffer the slings and arrows of outrageous fortune, or to take arms against a
+    sea of troubles, and by opposing end them. To die, to sleep&mdash;no more; and by a sleep
+    to say we end the heart-ache and the thousand natural shocks that flesh is heir to:
+    &rsquo;tis a consummation devoutly to be wish&rsquo;d.</p>
+    <p class="body">For in that sleep of death what dreams may come, <span class="ital">the
+    undiscover&rsquo;d country from whose bourn no traveller returns</span>, must give us
+    pause: there&rsquo;s the respect that makes calamity of so long life.</p>
+    <p class="epigraph">Thus conscience does make cowards of us all; and thus the native
+    hue of resolution is sicklied o&rsquo;er with the pale cast of thought.</p>
+    <p class="attrib">&mdash; Hamlet, Act III</p>
+    <p class="footnote"><span class="num">1.</span>The Doves Press printed Hamlet in 1909
+    with no italic sorts at all; this page imagines the companion they never cut.</p>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ================= PANEL 2: EBG 550 @ 7° ================= -->
+  <section class="panel" style="--w:550; --isize:17.3px; --obl:-10deg;">
+    <div class="spec">II · EB Garamond Italic — wght 550 · lean 7°</div>
+    <div class="running ital">Hamlet, Prince of Denmark</div>
+    <h2 class="booktitle">Hamlet, Prince of Denmark</h2>
+    <p class="actline ital">Act III · Scene I</p>
+    <p class="body">To be, or not to be, that is the question: whether &rsquo;tis nobler in the
+    mind to suffer the slings and arrows of outrageous fortune, or to take arms against a
+    sea of troubles, and by opposing end them. To die, to sleep&mdash;no more; and by a sleep
+    to say we end the heart-ache and the thousand natural shocks that flesh is heir to:
+    &rsquo;tis a consummation devoutly to be wish&rsquo;d.</p>
+    <p class="body">For in that sleep of death what dreams may come, <span class="ital">the
+    undiscover&rsquo;d country from whose bourn no traveller returns</span>, must give us
+    pause: there&rsquo;s the respect that makes calamity of so long life.</p>
+    <p class="epigraph">Thus conscience does make cowards of us all; and thus the native
+    hue of resolution is sicklied o&rsquo;er with the pale cast of thought.</p>
+    <p class="attrib">&mdash; Hamlet, Act III</p>
+    <p class="footnote"><span class="num">1.</span>The Doves Press printed Hamlet in 1909
+    with no italic sorts at all; this page imagines the companion they never cut.</p>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ================= PANEL 3: EBG 600 @ 7° ================= -->
+  <section class="panel" style="--w:600; --isize:17.2px; --obl:-10deg;">
+    <div class="spec">III · EB Garamond Italic — wght 600 · lean 7°</div>
+    <div class="running ital">Hamlet, Prince of Denmark</div>
+    <h2 class="booktitle">Hamlet, Prince of Denmark</h2>
+    <p class="actline ital">Act III · Scene I</p>
+    <p class="body">To be, or not to be, that is the question: whether &rsquo;tis nobler in the
+    mind to suffer the slings and arrows of outrageous fortune, or to take arms against a
+    sea of troubles, and by opposing end them. To die, to sleep&mdash;no more; and by a sleep
+    to say we end the heart-ache and the thousand natural shocks that flesh is heir to:
+    &rsquo;tis a consummation devoutly to be wish&rsquo;d.</p>
+    <p class="body">For in that sleep of death what dreams may come, <span class="ital">the
+    undiscover&rsquo;d country from whose bourn no traveller returns</span>, must give us
+    pause: there&rsquo;s the respect that makes calamity of so long life.</p>
+    <p class="epigraph">Thus conscience does make cowards of us all; and thus the native
+    hue of resolution is sicklied o&rsquo;er with the pale cast of thought.</p>
+    <p class="attrib">&mdash; Hamlet, Act III</p>
+    <p class="footnote"><span class="num">1.</span>The Doves Press printed Hamlet in 1909
+    with no italic sorts at all; this page imagines the companion they never cut.</p>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ================= PANEL 4: EBG 550 @ 11° ================= -->
+  <section class="panel" style="--w:550; --isize:17.3px; --obl:-6.2deg;">
+    <div class="spec">IV · EB Garamond Italic — wght 550 · lean 11° (modern)</div>
+    <div class="running ital">Hamlet, Prince of Denmark</div>
+    <h2 class="booktitle">Hamlet, Prince of Denmark</h2>
+    <p class="actline ital">Act III · Scene I</p>
+    <p class="body">To be, or not to be, that is the question: whether &rsquo;tis nobler in the
+    mind to suffer the slings and arrows of outrageous fortune, or to take arms against a
+    sea of troubles, and by opposing end them. To die, to sleep&mdash;no more; and by a sleep
+    to say we end the heart-ache and the thousand natural shocks that flesh is heir to:
+    &rsquo;tis a consummation devoutly to be wish&rsquo;d.</p>
+    <p class="body">For in that sleep of death what dreams may come, <span class="ital">the
+    undiscover&rsquo;d country from whose bourn no traveller returns</span>, must give us
+    pause: there&rsquo;s the respect that makes calamity of so long life.</p>
+    <p class="epigraph">Thus conscience does make cowards of us all; and thus the native
+    hue of resolution is sicklied o&rsquo;er with the pale cast of thought.</p>
+    <p class="attrib">&mdash; Hamlet, Act III</p>
+    <p class="footnote"><span class="num">1.</span>The Doves Press printed Hamlet in 1909
+    with no italic sorts at all; this page imagines the companion they never cut.</p>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ================= PANEL 5: Cormorant 500 @ 7° ================= -->
+  <section class="panel" style="--w:500; --isize:18.4px; --obl:-3deg;">
+    <div class="spec">V · Cormorant Italic — wght 500 · lean 7°</div>
+    <div class="running ital" style="font-family:'Cormorant It',serif;">Hamlet, Prince of Denmark</div>
+    <h2 class="booktitle">Hamlet, Prince of Denmark</h2>
+    <p class="actline ital" style="font-family:'Cormorant It',serif;">Act III · Scene I</p>
+    <p class="body">To be, or not to be, that is the question: whether &rsquo;tis nobler in the
+    mind to suffer the slings and arrows of outrageous fortune, or to take arms against a
+    sea of troubles, and by opposing end them. To die, to sleep&mdash;no more; and by a sleep
+    to say we end the heart-ache and the thousand natural shocks that flesh is heir to:
+    &rsquo;tis a consummation devoutly to be wish&rsquo;d.</p>
+    <p class="body">For in that sleep of death what dreams may come, <span class="ital" style="font-family:'Cormorant It',serif;">the
+    undiscover&rsquo;d country from whose bourn no traveller returns</span>, must give us
+    pause: there&rsquo;s the respect that makes calamity of so long life.</p>
+    <p class="epigraph" style="font-family:'Cormorant It',serif;">Thus conscience does make cowards of us all; and thus the native
+    hue of resolution is sicklied o&rsquo;er with the pale cast of thought.</p>
+    <p class="attrib" style="font-family:'Cormorant It',serif;">&mdash; Hamlet, Act III</p>
+    <p class="footnote" style="font-family:'Cormorant It',serif;"><span class="num">1.</span>The Doves Press printed Hamlet in 1909
+    with no italic sorts at all; this page imagines the companion they never cut.</p>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ================= PANEL 6: Cormorant 550 @ 7° ================= -->
+  <section class="panel" style="--fam:'Cormorant It',serif; --w:550; --isize:18.4px; --obl:-3deg;">
+    <div class="spec">VI · Cormorant Italic — wght 550 · lean 7°</div>
+    <div class="running ital">Hamlet, Prince of Denmark</div>
+    <h2 class="booktitle">Hamlet, Prince of Denmark</h2>
+    <p class="actline ital">Act III · Scene I</p>
+    <p class="body">To be, or not to be, that is the question: whether &rsquo;tis nobler in the
+    mind to suffer the slings and arrows of outrageous fortune, or to take arms against a
+    sea of troubles, and by opposing end them. To die, to sleep&mdash;no more; and by a sleep
+    to say we end the heart-ache and the thousand natural shocks that flesh is heir to:
+    &rsquo;tis a consummation devoutly to be wish&rsquo;d.</p>
+    <p class="body">For in that sleep of death what dreams may come, <span class="ital">the
+    undiscover&rsquo;d country from whose bourn no traveller returns</span>, must give us
+    pause: there&rsquo;s the respect that makes calamity of so long life.</p>
+    <p class="epigraph">Thus conscience does make cowards of us all; and thus the native
+    hue of resolution is sicklied o&rsquo;er with the pale cast of thought.</p>
+    <p class="attrib">&mdash; Hamlet, Act III</p>
+    <p class="footnote"><span class="num">1.</span>The Doves Press printed Hamlet in 1909
+    with no italic sorts at all; this page imagines the companion they never cut.</p>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ================= PANEL 7: Cormorant 550 tracking -1.5% ================= -->
+  <section class="panel" style="--fam:'Cormorant It',serif; --w:550; --isize:18.4px; --obl:-3deg; --track:normal; --wsp:-0.02em;">
+    <div class="spec">VII · Cormorant 550 · word-space −9% (subtle)</div>
+    <div class="running ital">Hamlet, Prince of Denmark</div>
+    <h2 class="booktitle">Hamlet, Prince of Denmark</h2>
+    <p class="actline ital">Act III · Scene I</p>
+    <p class="body">To be, or not to be, that is the question: whether &rsquo;tis nobler in the
+    mind to suffer the slings and arrows of outrageous fortune, or to take arms against a
+    sea of troubles, and by opposing end them. To die, to sleep&mdash;no more; and by a sleep
+    to say we end the heart-ache and the thousand natural shocks that flesh is heir to:
+    &rsquo;tis a consummation devoutly to be wish&rsquo;d.</p>
+    <p class="body">For in that sleep of death what dreams may come,<span class="ital"> the
+    undiscover&rsquo;d country from whose bourn no traveller returns</span>, must give us
+    pause: there&rsquo;s the respect that makes calamity of so long life.</p>
+    <p class="epigraph">Thus conscience does make cowards of us all; and thus the native
+    hue of resolution is sicklied o&rsquo;er with the pale cast of thought.</p>
+    <p class="attrib">&mdash; Hamlet, Act III</p>
+    <p class="footnote"><span class="num">1.</span>The Doves Press printed Hamlet in 1909
+    with no italic sorts at all; this page imagines the companion they never cut.</p>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ================= PANEL 8: Cormorant 550 tracking -2.5% ================= -->
+  <section class="panel" style="--fam:'Cormorant It',serif; --w:550; --isize:18.4px; --obl:-3deg; --track:normal; --wsp:-0.041em;">
+    <div class="spec">VIII · Cormorant 550 · word-space −17.5% (matched to Doves)</div>
+    <div class="running ital">Hamlet, Prince of Denmark</div>
+    <h2 class="booktitle">Hamlet, Prince of Denmark</h2>
+    <p class="actline ital">Act III · Scene I</p>
+    <p class="body">To be, or not to be, that is the question: whether &rsquo;tis nobler in the
+    mind to suffer the slings and arrows of outrageous fortune, or to take arms against a
+    sea of troubles, and by opposing end them. To die, to sleep&mdash;no more; and by a sleep
+    to say we end the heart-ache and the thousand natural shocks that flesh is heir to:
+    &rsquo;tis a consummation devoutly to be wish&rsquo;d.</p>
+    <p class="body">For in that sleep of death what dreams may come,<span class="ital"> the
+    undiscover&rsquo;d country from whose bourn no traveller returns</span>, must give us
+    pause: there&rsquo;s the respect that makes calamity of so long life.</p>
+    <p class="epigraph">Thus conscience does make cowards of us all; and thus the native
+    hue of resolution is sicklied o&rsquo;er with the pale cast of thought.</p>
+    <p class="attrib">&mdash; Hamlet, Act III</p>
+    <p class="footnote"><span class="num">1.</span>The Doves Press printed Hamlet in 1909
+    with no italic sorts at all; this page imagines the companion they never cut.</p>
+  </section>
+
+  <hr class="rule">
+
+  <!-- ================= PANEL 9: BAKED FONT ================= -->
+  <section class="panel" style="--fam:'Doves Italic Trial',serif; --w:550; --isize:19px; --obl:0deg;">
+    <div class="spec">IX · Doves Italic Trial 1 — the baked font, no CSS tricks</div>
+    <div class="running ital">Hamlet, Prince of Denmark</div>
+    <h2 class="booktitle">Hamlet, Prince of Denmark</h2>
+    <p class="actline ital">Act III · Scene I</p>
+    <p class="body">To be, or not to be, that is the question: whether &rsquo;tis nobler in the
+    mind to suffer the slings and arrows of outrageous fortune, or to take arms against a
+    sea of troubles, and by opposing end them. To die, to sleep&mdash;no more; and by a sleep
+    to say we end the heart-ache and the thousand natural shocks that flesh is heir to:
+    &rsquo;tis a consummation devoutly to be wish&rsquo;d.</p>
+    <p class="body">For in that sleep of death what dreams may come,<span class="ital"> the
+    undiscover&rsquo;d country from whose bourn no traveller returns</span>, must give us
+    pause: there&rsquo;s the respect that makes calamity of so long life.</p>
+    <p class="epigraph">Thus conscience does make cowards of us all; and thus the native
+    hue of resolution is sicklied o&rsquo;er with the pale cast of thought.</p>
+    <p class="attrib">&mdash; Hamlet, Act III</p>
+    <p class="footnote"><span class="num">1.</span>The Doves Press printed Hamlet in 1909
+    with no italic sorts at all; this page imagines the companion they never cut.</p>
+  </section>
+
+  <footer class="colophon">
+    Set with your Doves Type roman · trial cuts are EB Garamond &amp; Cormorant (OFL), normalized to x-height 374 · private use
+  </footer>
+</div>
+</body>
+</html>
