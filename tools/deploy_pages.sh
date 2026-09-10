@@ -5,9 +5,12 @@
 set -e
 cd "$(dirname "$0")/.."
 
-mkdir -p docs/fonts
+mkdir -p trials/fonts docs/fonts
 cp trials/tester.html docs/index.html
-cp trials/fonts/DovesItalic-Trial1.ttf trials/fonts/DovesItalic-Trial2.ttf docs/fonts/
+# Publish the canonical builds to both testers so rebakes cannot leave stale fonts.
+for destination in trials/fonts docs/fonts; do
+  cp build/DovesItalic-Trial1.ttf build/DovesItalic-Trial2.ttf "$destination/"
+done
 
 echo "docs/ ready:"
 ls -la docs docs/fonts
