@@ -5,12 +5,15 @@ Surgical so Trial-1's scaling/kerning/features are untouched -- we only replace
 glyph outlines + advances + lsb + family naming.
 """
 import os
+from pathlib import Path
 from fontTools.ttLib import TTFont
 from fontTools.pens.ttGlyphPen import TTGlyphPen
+from fontTools.pens.cu2quPen import Cu2QuPen
 from doves_quotes import contours
 
-T1 = "/Users/chris/Developer/doves-italic/build/DovesItalic-Trial1.ttf"
-OUT = "/Users/chris/Developer/doves-italic/build/DovesItalic-Trial2.ttf"
+ROOT = Path(__file__).resolve().parents[1]
+T1 = ROOT / "build/DovesItalic-Trial1.ttf"
+OUT = ROOT / "build/DovesItalic-Trial2.ttf"
 
 # Doves roman advances (upem 1000, matches our target metrics)
 ADV = {"quoteright": 176, "quotedblright": 427,
@@ -40,11 +43,13 @@ def main():
 
     glyphSet = f.getGlyphSet()
     for cname, gname in names.items():
-        pen = TTGlyphPen(glyphSet)
+        outline = TTGlyphPen(glyphSet)
+        # TrueType glyf requires quadratic outlines for browser OTS support.
+        pen = Cu2QuPen(outline, max_err=0.5, all_quadratic=True)
         for contour in contours(cname):
             for op, args in contour:
                 getattr(pen, op)(*args)
-        newg = pen.glyph()
+        newg = outline.glyph()
         glyf[gname] = newg
         newg.recalcBounds(glyf)
         lsb = newg.xMin if newg.numberOfContours != 0 else 0
@@ -76,6 +81,13 @@ def main():
         print(f"  {gname}: contours={g.numberOfContours} "
               f"bbox y[{g.yMin},{g.yMax}] adv={v['hmtx'][gname][0]}")
     assert v["OS/2"].sxHeight == 374
+    for cname, gname in names.items():
+        assert v["hmtx"][gname][0] == ADV[cname]
+    # Regression: cubic glyf point flags (bit 7) make OTS reject the entire font.
+    for gname in v.getGlyphOrder():
+        g = v["glyf"][gname]
+        if g.numberOfContours > 0:
+            assert not any(flag & 0x80 for flag in g.flags), gname
     print("ALL CHECKS PASS")
 
 

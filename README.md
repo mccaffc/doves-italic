@@ -16,7 +16,7 @@ to Doves' metrics and pushing its letterforms toward Doves DNA.
 | `tools/` | Python pipeline: bake, measure, quote construction, proofs |
 | `OFL.txt` | SIL Open Font License 1.1 — applies to all font files here |
 
-The live tester is at **https://mccaffc.github.io/doves-italic/** (after Pages deploys).
+The live tester is at **https://mccaffc.github.io/doves-italic/**.
 
 ## Builds
 
@@ -33,8 +33,16 @@ cd trials && python3 -m http.server 8741
 # http://localhost:8741/tester.html
 ```
 
-The tester degrades gracefully when the Doves roman isn't present (e.g. on
-GitHub Pages): the roman comparison panel hides itself.
+The tester shows the selected build, font loading result, review status and local
+save status. It remembers your text and sheet settings in this browser. Select
+text to apply local features; choose **Done with selection** to return to the
+whole sheet. **Copy sheet CSS** exports global settings; print includes local
+formatting. Both builds can be downloaded directly.
+
+Open **Study status & comparison** to load your licensed Doves roman for the
+Roman / Both views. The file stays in the tab: it is never uploaded or persisted.
+Without it, those controls stay visibly disabled. Font loading failures display
+an explicit fallback warning.
 
 ## Licensing notes
 

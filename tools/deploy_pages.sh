@@ -1,7 +1,7 @@
 #!/bin/sh
 # Publish the type tester to docs/ for GitHub Pages.
 # Single source of truth stays trials/tester.html; docs/ is a generated copy.
-# Excludes the Doves roman (EULA: no distribution) — the tester hides that panel.
+# Excludes the Doves roman (EULA: no distribution) — comparison is supplied locally by the user.
 set -e
 cd "$(dirname "$0")/.."
 

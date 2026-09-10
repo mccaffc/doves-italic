@@ -8,7 +8,6 @@ Tuned against an ASCII silhouette mirroring the roman's.
 pen ops capture_tuple-style: ('moveTo',((x,y),)) / ('curveTo',((x1,y1),(x2,y2),(x3,y3))).
 """
 import math
-import numpy as np
 
 # ---- Doves roman measured metas ----
 RIGHT_H = 186.0      # quoteright / quotedblright height (near cap)

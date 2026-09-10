@@ -8,26 +8,30 @@
   @font-face {
     font-family: "Doves Italic Trial";
     src: url("fonts/DovesItalic-Trial1.ttf") format("truetype");
-    font-display: block;
+    font-display: swap;
   }
   @font-face {
     font-family: "Doves Italic Trial 2";
-    src: url("fonts/DovesItalic-Trial2.ttf") format("truetype");
-    font-display: block;
+    src: url("fonts/DovesItalic-Trial2.ttf?v=3") format("truetype");
+    font-display: swap;
   }
   @font-face {
     font-family: "Doves Roman";
-    src: url("fonts/DovesType-Regular.otf") format("opentype");
-    font-display: block;
+    src: local("Doves Type"), local("DovesType-Regular");
+    font-display: swap;
   }
 
   :root {
     --paper: #f6f2ea;
     --panel: #efe9dd;
     --ink: #1c1a17;
-    --muted: #8a8272;
+    --muted: #665f52;
     --hairline: #d8d2c4;
     --accent: #7a5c3e;
+    --success: #365a3b;
+    --success-border: #9bac99;
+    --error: #8a2929;
+    --print-paper: #fff;
   }
 
   * { box-sizing: border-box; }
@@ -73,7 +77,7 @@
   .seg button:first-child { border-radius: 6px 0 0 6px; }
   .seg button:last-child { border-radius: 0 6px 6px 0; }
   .seg button + button { border-left: 0; }
-  .seg button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .seg button.on { background: var(--accent); color: var(--paper); border-color: var(--accent); }
 
   .fgroup { margin: 10px 0 2px; font-size: 10px; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--muted); }
@@ -141,24 +145,80 @@
   .no-roman #sheetRoman { display: none !important; }
 
   @media print {
-    body { display: block; height: auto; overflow: visible; background: #fff; }
+    body { display: block; height: auto; overflow: visible; background: var(--print-paper); }
     #panel { display: none; }
     #wrap { padding: 0; overflow: visible; }
     #sheet, #sheetRoman { max-width: none; }
-    #sheetRoman::before { color: #888; }
+    #sheetRoman::before { color: var(--muted); }
   }
+
+  body { display: grid; grid-template: 64px minmax(0, 1fr) / 330px minmax(0, 1fr); height: 100dvh; }
+  #appHeader { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 24px; border-bottom: 1px solid var(--hairline); background: var(--paper); }
+  #appHeader > div { display: flex; align-items: center; gap: 16px; }
+  #appHeader strong { font-size: 18px; }
+  #saveStatus { color: var(--muted); font-size: 12px; }
+  .badge { display: inline-block; padding: 5px 9px; border: 1px solid var(--hairline); border-radius: 4px; font-size: 12px; line-height: 1.4; }
+  #fontStatus[data-status="loaded"] { color: var(--success); border-color: var(--success-border); }
+  #fontStatus[data-status="error"], #fontError { color: var(--error); }
+  #panel { width: auto; min-width: 0; padding: 24px 20px 40px; }
+  #panel h1 { font-size: 20px; }
+  .grp > h2 { font-size: 12px; letter-spacing: .08em; }
+  .fnote, .fgroup { font-size: 12px; }
+  label.row .lbl { width: 70px; }
+  label.row output { width: 48px; }
+  input[type="range"], select { min-width: 0; }
+  select, button, .download, .upload { min-height: 34px; }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  button:focus-visible, select:focus-visible, summary:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .chip span { font-size: 12px; padding: 6px 9px; }
+  .chip input:indeterminate + span { background: var(--panel); border: 2px dashed var(--accent); }
+  #selStatus { font-size: 13px; line-height: 1.5; }
+  #wholeSheet { margin-bottom: 8px; background: transparent; border: 1px solid var(--hairline); border-radius: 4px; color: var(--accent); cursor: pointer; }
+  #wrap { padding: 28px 40px 80px; min-width: 0; }
+  #buildOverview { max-width: 900px; margin: 0 auto 28px; padding-bottom: 24px; border-bottom: 1px solid var(--hairline); }
+  .statusHeading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin: 0 0 8px; }
+  #buildTitle { font-size: 24px; font-weight: 500; margin: 0; line-height: 1.25; }
+  .reviewStatus { font-size: 12px; line-height: 1.6; color: var(--muted); }
+  #buildDescription { line-height: 1.6; max-width: 66ch; color: var(--muted); }
+  summary { cursor: pointer; line-height: 1.6; }
+  #studyDetails p { max-width: 70ch; line-height: 1.6; }
+  .upload { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .upload input { max-width: 100%; font: inherit; }
+  .download { display: flex; align-items: center; justify-content: center; text-decoration: none; background: var(--ink); color: var(--paper); border-radius: 5px; padding: 9px; font-weight: 500; }
+  .specimenBar { max-width: 900px; margin: 0 auto 30px; display: flex; justify-content: space-between; gap: 16px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+  #sheet, #sheetRoman { max-width: 30em; min-height: 180px; white-space: pre-wrap; overflow-wrap: anywhere; font-synthesis: none; }
+  #sheet:focus { outline: 1px solid var(--hairline); outline-offset: 12px; }
+  #sheetRoman::before { content: none; }
+  #romanLabel { margin: 32px 0 12px; }
+  #sheetRoman { margin-top: 0; padding-top: 24px; }
+  #editHint { max-width: 900px; margin: 32px auto 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+  #fontError { border: 1px solid currentColor; padding: 16px; margin-bottom: 24px; line-height: 1.5; }
+  #panel > details { margin-top: 20px; }
+  [hidden] { display: none !important; }
+  @media (max-width: 850px) { #wrap { padding: 24px; } .statusHeading { align-items: flex-start; flex-direction: column; } }
+  @media (max-width: 640px) {
+    body { display: flex; flex-direction: column; height: auto; overflow: auto; }
+    #appHeader { padding: 16px; align-items: flex-start; } #appHeader > div { flex-direction: column; align-items: flex-start; gap: 6px; }
+    #panel { order: 2; height: auto; border-right: 0; border-top: 1px solid var(--hairline); overflow: visible; }
+    #wrap { order: 1; overflow: visible; padding: 24px; }
+    #sheet, #sheetRoman { min-height: 100px; } .specimenBar { flex-direction: column; gap: 4px; }
+  }
+  @media print { body { display: block; height: auto; } #appHeader, #buildOverview, .specimenBar, #editHint, #fontError { display: none; } #sheet:focus { outline: none; } }
+
 </style>
 </head>
 <body>
+<header id="appHeader"><div><strong>Doves Italic</strong><span class="badge">Companion italic study</span></div><span id="saveStatus" role="status">Starting…</span></header>
 
 <aside id="panel">
-  <h1>Doves Italic <span>· trial tester</span></h1>
+  <h1>Type tester</h1><p class="fnote">Set the sheet, then select text to explore details.</p>
 
   <section class="grp">
-    <h2>Sheet</h2>
+    <h2>Whole sheet</h2>
     <label class="row"><span class="lbl">Preset</span>
       <select id="preset">
-        <option value="soliloquy">Hamlet — soliloquy</option>
+        <option value="custom" disabled>Custom text</option><option value="quotes">Quotation marks</option><option value="soliloquy">Hamlet — soliloquy</option>
         <option value="figures">Figures &amp; fractions</option>
         <option value="alphabet">Alphabet &amp; glyphs</option>
         <option value="pangram">Pangrams</option>
@@ -174,8 +234,8 @@
     </label>
     <div class="seg" id="face">
       <button data-face="italic" class="on">Italic</button>
-      <button data-face="roman">Roman</button>
-      <button data-face="both">Both</button>
+      <button data-face="roman" disabled>Roman</button>
+      <button data-face="both" disabled>Both</button>
     </div>
     <label class="row"><span class="lbl">Size</span>
       <input type="range" id="size" min="12" max="80" step="1" value="22">
@@ -193,10 +253,10 @@
 
   <section class="grp">
     <h2>Selection styling</h2>
-    <div id="selStatus">Whole sheet — select text to target it.</div>
+    <div id="selStatus" role="status">Whole sheet targeted</div><button id="wholeSheet" hidden>Done with selection</button>
     <div class="seg" id="selFace">
       <button data-fam="trial">Italic</button>
-      <button data-fam="roman">Roman</button>
+      <button data-fam="roman" disabled>Roman</button>
     </div>
     <div class="qrow">
       <button class="qbtn" id="shrink">A−</button>
@@ -210,24 +270,39 @@
 
   <section class="grp">
     <h2>OpenType features</h2>
-    <p class="fnote">Dashed chips are on by default — unchecking writes an explicit 0.
-    Hover any chip for its tag.</p>
+    <p class="fnote">Checked features are active for the target above. Mixed selections show a dash. Hover for the font tag.</p>
     <div id="features"></div>
   </section>
 
   <section class="grp actions">
-    <h2>Export</h2>
-    <button id="copyCss" class="primary">Copy CSS</button>
+    <h2>Export</h2><a id="downloadFont" class="download" href="fonts/DovesItalic-Trial2.ttf?v=3" download>Download Trial 2 font</a>
+    <button id="copyCss" class="primary">Copy sheet CSS</button>
     <button id="doPrint">Print / Save as PDF</button>
     <button id="reset">Reset everything</button>
   </section>
 
-  <div id="cssout"></div>
+  <details><summary>Sheet CSS</summary><div id="cssout"></div><p class="fnote">Sheet settings only. Selected-text overrides are included when printing.</p></details>
 </aside>
 
 <main id="wrap">
-  <div id="sheet" contenteditable="true" spellcheck="false"></div>
-  <div id="sheetRoman" contenteditable="true" spellcheck="false" hidden></div>
+  <section id="buildOverview" aria-label="Build status">
+    <div class="statusHeading"><div><p class="eyebrow">Current build</p><h2 id="buildTitle">Trial 2 · Doves quotes</h2></div><span id="fontStatus" class="badge" role="status">Loading font…</span></div>
+    <p id="buildDescription"></p><p class="reviewStatus"><b>Awaiting design review</b> · Letterforms, spacing and final-size proofs.</p>
+    <details id="studyDetails"><summary>Study status &amp; comparison</summary>
+      <p><b>Trial 1 — built:</b> Cormorant Italic adapted to Doves’ x-height, slant and word space.</p>
+      <p><b>Trial 2 — built:</b> Four quotation marks redrawn with ball heads and hooked tails.</p>
+      <p><b>Still to review:</b> Letterform compatibility, spacing, kerning and proofs at final sizes. Neither trial is a finished typeface.</p>
+      <p id="romanStatus" role="status">Roman comparison unavailable. Load your licensed font to compare.</p>
+      <label class="upload">Load Doves roman <input id="romanFile" type="file" accept=".otf,.ttf,.woff,.woff2"></label>
+      <p class="fnote">Used in this tab only. Your font is never uploaded or saved.</p>
+    </details>
+  </section>
+  <div class="specimenBar"><span id="specimenLabel">Editable specimen</span><span id="settingSummary"></span></div>
+  <div id="fontError" role="alert" hidden></div>
+  <div id="sheet" role="textbox" aria-label="Editable type specimen" aria-multiline="true" contenteditable="true" spellcheck="false"></div>
+  <div id="romanLabel" class="eyebrow" hidden>Roman comparison · same text</div>
+  <div id="sheetRoman" aria-label="Roman comparison" hidden></div>
+  <p id="editHint">Type directly in the specimen. Select text to apply local features or sizing.</p>
 </main>
 
 <script>
@@ -278,12 +353,19 @@ const FEATURES = [
 ];
 
 const PRESETS = {
+  quotes: `“To be, or not to be,” she said.
+‘That is the question.’
+
+“ ”  ‘ ’  ’tis  don’t  James’s
+
+“Quotation”  ‘Quotation’
+Compare Trial 1 and Trial 2 using the Build menu.`,
   soliloquy: `To be, or not to be, that is the question:
 whether &rsquo;tis nobler in the mind to suffer
 the slings and arrows of outrageous fortune&hellip;
 
-Select a word, then try <b>Alternate single-story a</b>,
-<b>Q — tail variants</b> or <b>Discretionary ligatures</b>.`,
+To die, to sleep;
+to sleep, perchance to dream — ay, there’s the rub.`,
   figures: `In 1667, 3/4 of the 1,234 volumes (see note12)
 cost &pound;45 &mdash; roughly 0.5% over budget.
 
@@ -311,290 +393,187 @@ Order of Service
 <b>The Exchange of Vows</b>
 <b>The Rings</b> &mdash; 11 May 2025, half past two
 <b>Blessing &amp; Recessional</b>`,
-  blank: `Type anything&hellip;`
+  blank: ``
 };
 
 const $ = id => document.getElementById(id);
-const sheet = $("sheet"), sheetRoman = $("sheetRoman");
-const state = { build: "trial2" };
-
-/* active italic family (build selector + selection-styling share this) */
-function italicFamily() {
-  return state.build === "trial2"
-    ? '"Doves Italic Trial 2", serif'
-    : '"Doves Italic Trial", serif';
-}
-
-/* ---------- build feature chips ---------- */
-(function buildFeatures() {
-  const host = $("features");
-  let lastGroup = null;
-  for (const f of FEATURES) {
-    if (f.group !== lastGroup) {
-      lastGroup = f.group;
-      const h = document.createElement("div");
-      h.className = "fgroup"; h.textContent = f.group;
-      host.appendChild(h);
-      const wrap = document.createElement("div");
-      wrap.className = "chips";
-      host.appendChild(wrap);
-    }
-    const chips = host.lastElementChild;
-    const lab = document.createElement("label");
-    lab.className = "chip" + (f.def ? " def" : "");
-    lab.title = f.tag + " — " + f.name;
-    lab.innerHTML = `<input type="checkbox" data-tag="${f.tag}" ${f.def ? "checked" : ""}>
-      <span>${f.name}</span>`;
-    chips.appendChild(lab);
+const sheet = $('sheet'), sheetRoman = $('sheetRoman');
+const KEY = 'doves-tester-v2';
+const DEFAULTS = {build:'trial2', face:'italic', size:28, lead:1.55, track:0, wsp:0, preset:'soliloquy'};
+const state = {...DEFAULTS};
+const globalFeatures = Object.fromEntries(FEATURES.map(f => [f.tag, f.def]));
+const fontStates = {trial1:'loading', trial2:'loading'};
+let romanAvailable = false, savedRange = null, saveTimer;
+function italicFamily() { return state.build === 'trial2' ? '"Doves Italic Trial 2", serif' : '"Doves Italic Trial", serif'; }
+function featureSettings(values=globalFeatures) { return FEATURES.map(f => `"${f.tag}" ${values[f.tag] ? 1 : 0}`).join(', '); }
+function parseFeatures(value) { return Object.fromEntries([...value.matchAll(/"([a-z0-9]{4})"(?:\s+(\d+|on|off))?/g)].map(m=>[m[1],m[2] !== '0' && m[2] !== 'off'])); }
+function selectionRange() { return savedRange && sheet.contains(savedRange.commonAncestorContainer) && !savedRange.collapsed ? savedRange : null; }
+function selectedElements() {
+  const range=selectionRange(); if (!range) return [];
+  const walker=document.createTreeWalker(sheet,NodeFilter.SHOW_TEXT), result=[];
+  while(walker.nextNode()) {
+    const node=walker.currentNode;
+    if(range.intersectsNode(node) && node.length && !(range.endContainer===node && range.endOffset===0) && !(range.startContainer===node && range.startOffset===node.length)) result.push(node.parentElement);
   }
-})();
-
-/* ---------- selection helpers ---------- */
-function currentSelection() {
-  const sel = window.getSelection();
-  if (!sel.rangeCount || sel.isCollapsed) return null;
-  const range = sel.getRangeAt(0);
-  const hostEl = sheet.contains(range.commonAncestorContainer) ? sheet
-    : (sheetRoman.contains(range.commonAncestorContainer) ? sheetRoman : null);
-  if (!hostEl) return null;
-  return { sel, range, hostEl };
+  return result;
 }
-
-function syncRoman() {
-  if (document.activeElement !== sheetRoman)
-    sheetRoman.innerHTML = sheet.innerHTML;
-  persist();
-}
-
-function wrapSelection(styles) {
-  const c = currentSelection();
-  if (!c) return false;
-  const { sel, range, hostEl } = c;
-  const span = document.createElement("span");
-  Object.assign(span.style, styles);
-  try {
-    const frag = range.extractContents();
-    span.appendChild(frag);
-    range.insertNode(span);
-    sel.removeAllRanges();
-  } catch (e) { return false; }
-  syncRoman();
-  return true;
-}
-
-function clearSelectionFormatting() {
-  const c = currentSelection();
-  if (!c) return;
-  const { range, hostEl } = c;
-  const spans = [...hostEl.querySelectorAll("span")].filter(sp =>
-    range.intersectsNode(sp));
-  for (const sp of spans) {
-    const parent = sp.parentNode;
-    while (sp.firstChild) parent.insertBefore(sp.firstChild, sp);
-    parent.removeChild(sp);
-    parent.normalize();
-  }
-  syncRoman();
-}
-
-function updateSelStatus() {
-  const c = currentSelection();
-  const el = $("selStatus");
-  if (c) {
-    const n = c.sel.toString().length;
-    el.textContent = `Selection targeted — ${n} character${n === 1 ? "" : "s"}`;
-  } else {
-    el.textContent = "Whole sheet — select text to target it.";
-  }
-}
-document.addEventListener("selectionchange", updateSelStatus);
-
-/* keep selection alive when clicking panel controls */
-$("panel").addEventListener("mousedown", e => {
-  if (e.target.closest(".chip, .qbtn, #selFace button")) e.preventDefault();
-});
-
-/* ---------- apply (whole sheet) ---------- */
-function featureSettings() {
-  const parts = [];
-  document.querySelectorAll("#features input").forEach(cb => {
-    const def = FEATURES.find(f => f.tag === cb.dataset.tag).def;
-    if (cb.checked !== def) parts.push(`"${cb.dataset.tag}" ${cb.checked ? 1 : 0}`);
+function syncFeatures() {
+  const elements=selectedElements();
+  document.querySelectorAll('#features input').forEach(cb=>{
+    const values=elements.map(el=>parseFeatures(getComputedStyle(el).fontFeatureSettings)[cb.dataset.tag] ?? globalFeatures[cb.dataset.tag]);
+    cb.checked=values.length ? values.every(Boolean) : globalFeatures[cb.dataset.tag];
+    cb.indeterminate=values.length>0 && values.some(v=>v!==values[0]);
   });
-  return parts.length ? parts.join(", ") : "normal";
 }
-
-function apply() {
-  const face = state.face || "italic";
-  const family = face === "roman" ? '"Doves Roman", serif' : italicFamily();
-  const fss = featureSettings();
-  const styles = {
-    fontFamily: family,
-    fontSize: state.size + "px",
-    lineHeight: state.lead,
-    letterSpacing: state.track + "em",
-    wordSpacing: state.wsp + "em",
-    fontFeatureSettings: fss,
-    fontKerning: "normal",
-  };
-  for (const el of [sheet, sheetRoman]) Object.assign(el.style, styles);
-  sheetRoman.style.fontFamily = '"Doves Roman", serif';
-
-  $("sizeOut").textContent = state.size + "px";
-  $("leadOut").textContent = Number(state.lead).toFixed(2);
-  $("trackOut").textContent = state.track + "em";
-  $("wspOut").textContent = state.wsp + "em";
-  $("cssout").textContent =
-    `font-family: ${family}; font-size: ${state.size}px; line-height: ${state.lead}; ` +
-    `letter-spacing: ${state.track}em; word-spacing: ${state.wsp}em; ` +
-    `font-feature-settings: ${fss};`;
-
-  persist();
+function updateSelection() {
+  const range=selectionRange(), n=range?.toString().length || 0;
+  $('selStatus').textContent=n ? `${n} characters selected · features apply here` : 'Whole sheet targeted · features apply everywhere';
+  $('wholeSheet').hidden=!n;
+  document.querySelectorAll('#selFace button,.qbtn').forEach(b=>b.disabled=!n || (b.dataset.fam==='roman' && !romanAvailable));
+  syncFeatures();
 }
-
-/* ---------- persistence ---------- */
-const KEY = "doves-tester-v2";
-let saveTimer = null;
+function clearTarget() { savedRange=null; window.getSelection().removeAllRanges(); updateSelection(); }
+document.addEventListener('selectionchange',()=>{
+  const sel=window.getSelection();
+  if(sel.rangeCount && !sel.isCollapsed && sheet.contains(sel.getRangeAt(0).commonAncestorContainer)) savedRange=sel.getRangeAt(0).cloneRange();
+  else if(document.activeElement===sheet) savedRange=null;
+  updateSelection();
+});
+$('wholeSheet').onclick=clearTarget;
+// Retain the target when pointer focus moves into the controls; keyboard users use the same saved range.
+$('panel').addEventListener('mousedown',e=>{ if(e.target.closest('.chip,.qbtn,#selFace button')) e.preventDefault(); });
+function wrapSelection(styles, clear=false) {
+  const range=selectionRange(); if(!range) return;
+  const span=document.createElement('span');
+  Object.assign(span.style,styles);
+  const fragment=range.extractContents();
+  if(clear) span.textContent=fragment.textContent;
+  else {
+    fragment.querySelectorAll('*').forEach(el=>Object.keys(styles).forEach(key=>el.style[key]=''));
+    span.appendChild(fragment);
+  }
+  range.insertNode(span);
+  savedRange=document.createRange(); savedRange.selectNodeContents(span);
+  const sel=window.getSelection(); sel.removeAllRanges(); sel.addRange(savedRange.cloneRange());
+  syncRoman(); updateSelection(); persist();
+}
+function syncRoman() {
+  sheetRoman.innerHTML=sheet.innerHTML;
+  sheetRoman.querySelectorAll('[style]').forEach(el=>el.style.fontFamily='');
+}
 function persist() {
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => {
-    localStorage.setItem(KEY, JSON.stringify({
-      text: sheet.innerHTML,
-      build: state.build,
-      face: state.face, size: state.size, lead: state.lead,
-      track: state.track, wsp: state.wsp,
-      features: [...document.querySelectorAll("#features input")]
-        .map(c => c.checked ? 1 : 0).join("")
-    }));
-  }, 300);
+  $('saveStatus').textContent='Saving…';
+  clearTimeout(saveTimer); saveTimer=setTimeout(save,300);
+}
+function save() {
+  try { localStorage.setItem(KEY,JSON.stringify({...state,text:sheet.innerHTML,features:FEATURES.map(f=>globalFeatures[f.tag]?'1':'0').join('')})); $('saveStatus').textContent='Saved in this browser'; }
+  catch { $('saveStatus').textContent='Not saved · browser storage unavailable'; }
+}
+function sanitize(html) {
+  const template=document.createElement('template'); template.innerHTML=html;
+  template.content.querySelectorAll('*').forEach(el=>{
+    if(!['SPAN','B','I','EM','STRONG','BR','DIV','P'].includes(el.tagName)) {el.replaceWith(document.createTextNode(el.textContent));return;}
+    const styles={}; for(const key of ['fontFamily','fontSize','lineHeight','letterSpacing','wordSpacing','fontFeatureSettings']) styles[key]=el.style[key];
+    [...el.attributes].forEach(a=>el.removeAttribute(a.name)); Object.assign(el.style,styles);
+  });
+  return template.innerHTML;
 }
 function restore() {
   try {
-    const s = JSON.parse(localStorage.getItem(KEY));
-    if (!s) return false;
-    sheet.innerHTML = s.text || PRESETS.soliloquy;
-    state.build = s.build || "trial2";
-    state.face = s.face || "italic";
-    state.size = s.size || 22; state.lead = s.lead || 1.55;
-    state.track = s.track || 0; state.wsp = s.wsp || 0;
-    $("size").value = state.size; $("lead").value = state.lead;
-    $("track").value = state.track; $("wsp").value = state.wsp;
-    if (s.features && s.features.length === FEATURES.length)
-      document.querySelectorAll("#features input").forEach((c, i) => c.checked = s.features[i] === "1");
-    setFace(state.face);
+    const s=JSON.parse(localStorage.getItem(KEY)); if(!s) return false;
+    if(['trial1','trial2'].includes(s.build)) state.build=s.build;
+    state.preset=Object.hasOwn(PRESETS,s.preset)?s.preset:'custom';
+    for(const id of ['size','lead','track','wsp']) { const input=$(id), value=Number(s[id]); if(s[id]!=null && Number.isFinite(value)) state[id]=Math.max(Number(input.min),Math.min(Number(input.max),value)); }
+    // A local roman file is deliberately not persisted, so restore into the available italic face.
+    if(typeof s.features==='string' && s.features.length===FEATURES.length) FEATURES.forEach((f,i)=>globalFeatures[f.tag]=s.features[i]==='1');
+    sheet.innerHTML=sanitize(typeof s.text==='string'?s.text:PRESETS.soliloquy);
     return true;
   } catch { return false; }
 }
-
-/* ---------- wiring ---------- */
-function setFace(face) {
-  if (document.documentElement.classList.contains("no-roman") && face !== "italic")
-    face = "italic";
-  state.face = face;
-  document.querySelectorAll("#face button").forEach(b =>
-    b.classList.toggle("on", b.dataset.face === face));
-  sheetRoman.hidden = face !== "both";
-  sheet.style.display = face === "roman" ? "none" : "block";
-  apply();
+function updateBuildStatus() {
+  const trial=state.build==='trial2'?2:1, status=fontStates[state.build];
+  $('buildTitle').textContent=`Trial ${trial} · ${trial===2?'Doves quotes':'Metric adaptation'}`;
+  $('buildDescription').textContent=trial===2 ? 'Adapted proportions, with four redrawn quotation marks. Use the quotation specimen to compare the two builds.' : 'Cormorant Italic adapted to Doves’ x-height, 7° slant and word space. Original Cormorant quotation marks.';
+  $('fontStatus').dataset.status=status;
+  $('fontStatus').textContent=status==='loaded'?'Font loaded':status==='error'?'Font failed to load':'Loading font…';
+  $('fontError').hidden=status!=='error';
+  $('fontError').textContent=`Trial ${trial} could not load. The specimen is showing a fallback font. Try the other build or reload the page.`;
+  $('downloadFont').href=`fonts/DovesItalic-Trial${trial}.ttf?v=3`;
+  $('downloadFont').textContent=`Download Trial ${trial} font`;
 }
-
-document.querySelectorAll("#face button").forEach(b =>
-  b.addEventListener("click", () => setFace(b.dataset.face)));
-
-$("preset").addEventListener("change", e => {
-  sheet.innerHTML = PRESETS[e.target.value];
-  sheetRoman.innerHTML = sheet.innerHTML;
-  apply();
-});
-
-$("build").addEventListener("change", e => {
-  state.build = e.target.value;
-  apply();
-});
-
-for (const [id, key, fmt] of [
-  ["size", "size", parseFloat], ["lead", "lead", parseFloat],
-  ["track", "track", parseFloat], ["wsp", "wsp", parseFloat]]) {
-  $(id).addEventListener("input", e => { state[key] = fmt(e.target.value); apply(); });
+function apply() {
+  const family=state.face==='roman'?'"Doves Roman", serif':italicFamily();
+  const styles={fontFamily:family,fontSize:state.size+'px',lineHeight:state.lead,letterSpacing:state.track+'em',wordSpacing:state.wsp+'em',fontFeatureSettings:featureSettings(),fontKerning:'auto'};
+  Object.assign(sheet.style,styles); Object.assign(sheetRoman.style,styles,{fontFamily:'"Doves Roman", serif'});
+  sheet.style.setProperty('--italic-family',italicFamily());
+  sheet.style.setProperty('--sheet-family',family);
+  sheet.style.setProperty('--sheet-size',state.size+'px');
+  sheet.style.setProperty('--sheet-features',featureSettings());
+  sheetRoman.hidden=state.face!=='both'; $('romanLabel').hidden=state.face!=='both';
+  document.querySelectorAll('#face button').forEach(b=>{b.classList.toggle('on',b.dataset.face===state.face);b.setAttribute('aria-pressed',String(b.dataset.face===state.face));});
+  $('build').value=state.build; $('preset').value=state.preset;
+  for(const id of ['size','lead','track','wsp']) $(id).value=state[id];
+  $('sizeOut').textContent=state.size+'px'; $('leadOut').textContent=Number(state.lead).toFixed(2); $('trackOut').textContent=state.track+'em'; $('wspOut').textContent=state.wsp+'em';
+  const active=FEATURES.filter(f=>globalFeatures[f.tag]);
+  $('settingSummary').textContent=`${state.size}px / ${Number(state.lead).toFixed(2)} leading · ${active.length} features on`;
+  $('settingSummary').title=active.map(f=>f.name).join(', ');
+  $('specimenLabel').textContent=state.face==='roman'?'Editable specimen · Doves roman':`Editable specimen · Trial ${state.build==='trial2'?2:1}`;
+  $('cssout').textContent=`font-family: ${family};\nfont-size: ${state.size}px;\nline-height: ${state.lead};\nletter-spacing: ${state.track}em;\nword-spacing: ${state.wsp}em;\nfont-feature-settings: ${featureSettings()};`;
+  syncRoman(); updateBuildStatus(); updateSelection(); persist();
 }
-
-/* feature chips: selection-aware */
-document.querySelectorAll("#features input").forEach(cb =>
-  cb.addEventListener("change", () => {
-    const c = currentSelection();
-    if (c) {
-      wrapSelection({ fontFeatureSettings: `"${cb.dataset.tag}" ${cb.checked ? 1 : 0}` });
-      cb.checked = !cb.checked;              // global state unchanged
-      updateSelStatus();
-    } else {
-      apply();
-    }
-  }));
-
-/* selection styling controls */
-document.querySelectorAll("#selFace button").forEach(b =>
-  b.addEventListener("click", () => {
-    const fam = b.dataset.fam === "roman" ? '"Doves Roman", serif' : italicFamily();
-    if (!wrapSelection({ fontFamily: fam }))
-      $("selStatus").textContent = "Select some text in the sheet first.";
-  }));
-
-function bumpSelectionSize(delta) {
-  const c = currentSelection();
-  if (!c) { $("selStatus").textContent = "Select some text in the sheet first."; return; }
-  const node = c.range.startContainer;
-  const el = node.nodeType === 3 ? node.parentElement : node;
-  const cur = parseFloat(getComputedStyle(el).fontSize) ||
-              (state.face === "roman" ? state.size : state.size);
-  wrapSelection({ fontSize: (cur + delta) + "px" });
-}
-$("grow").addEventListener("click", () => bumpSelectionSize(2));
-$("shrink").addEventListener("click", () => bumpSelectionSize(-2));
-$("clearFmt").addEventListener("click", () => {
-  if (!currentSelection()) { $("selStatus").textContent = "Select some text in the sheet first."; return; }
-  clearSelectionFormatting();
-});
-
-sheet.addEventListener("input", () => { sheetRoman.innerHTML = sheet.innerHTML; persist(); });
-sheetRoman.addEventListener("input", () => { sheet.innerHTML = sheetRoman.innerHTML; persist(); });
-
-$("copyCss").addEventListener("click", async () => {
-  try { await navigator.clipboard.writeText($("cssout").textContent);
-    $("copyCss").textContent = "Copied ✓";
-    setTimeout(() => $("copyCss").textContent = "Copy CSS", 1200);
-  } catch { $("copyCss").textContent = "Copy failed"; }
-});
-$("doPrint").addEventListener("click", () => window.print());
-$("reset").addEventListener("click", () => {
-  localStorage.removeItem(KEY);
-  localStorage.removeItem("doves-tester-v1");
-  location.reload();
-});
-
-/* keep the build select in sync with restored state (and the initial boot) */
-function syncBuildSelect() { $("build").value = state.build; }
-
-/* ---------- boot ---------- */
-if (!restore()) {
-  sheet.innerHTML = PRESETS.soliloquy;
-  setFace("italic");
-}
-syncBuildSelect();
-sheetRoman.innerHTML = sheet.innerHTML;
-apply();
-updateSelStatus();
-
-/* If the Doves roman isn't served (GitHub Pages strips it — no distribution),
-   hide the roman comparison UI. */
-document.fonts.load('16px "Doves Roman"')
-  .then(faces => { if (!faces.length) degradeRoman(); })
-  .catch(() => degradeRoman());
-function degradeRoman() {
-  if (!document.fonts.check('16px "Doves Roman"')) {
-    document.documentElement.classList.add("no-roman");
-    setFace("italic");
+// Feature groups start with the frequently used ligatures open; less common controls remain discoverable.
+let lastGroup, group;
+for(const f of FEATURES) {
+  if(f.group!==lastGroup) {
+    lastGroup=f.group; const details=document.createElement('details'); details.open=f.group==='Ligatures';
+    const title=document.createElement('summary'); title.textContent=f.group; details.append(title);
+    group=document.createElement('div');group.className='chips';details.append(group);details.style.marginTop='12px';$('features').append(details);
   }
+  const lab=document.createElement('label');lab.className='chip';lab.title=f.tag+' — '+f.name;
+  lab.innerHTML=`<input type="checkbox" data-tag="${f.tag}"><span>${f.name}</span>`;group.append(lab);
 }
+const EXCLUSIVE=[['onum','lnum'],['tnum','pnum'],['sups','subs','sinf','numr','dnom'],['cv01','cv02','cv03','cv04']];
+document.querySelectorAll('#features input').forEach(cb=>cb.onchange=()=>{
+  const tag=cb.dataset.tag, checked=cb.checked, range=selectionRange();
+  const values=range ? {...globalFeatures,...parseFeatures(getComputedStyle(selectedElements()[0]||sheet).fontFeatureSettings)} : globalFeatures;
+  values[tag]=checked; if(checked) EXCLUSIVE.filter(tags=>tags.includes(tag)).flat().filter(t=>t!==tag).forEach(t=>values[t]=false);
+  if(range) wrapSelection({fontFeatureSettings:featureSettings(values)}); else apply();
+});
+$('preset').onchange=e=>{clearTarget();state.preset=e.target.value;sheet.innerHTML=PRESETS[state.preset];apply();};
+$('build').onchange=e=>{state.build=e.target.value;apply();};
+for(const id of ['size','lead','track','wsp']) $(id).oninput=e=>{state[id]=Number(e.target.value);apply();};
+document.querySelectorAll('#face button').forEach(b=>b.onclick=()=>{clearTarget();state.face=b.dataset.face;apply();});
+document.querySelectorAll('#selFace button').forEach(b=>b.onclick=()=>{
+  wrapSelection({fontFamily:b.dataset.fam==='roman'?'"Doves Roman", serif':'var(--italic-family)'});
+});
+function bump(delta) {const el=selectedElements()[0]; if(el) wrapSelection({fontSize:Math.max(8,Math.min(160,parseFloat(getComputedStyle(el).fontSize)+delta))+'px'});}
+$('grow').onclick=()=>bump(2);$('shrink').onclick=()=>bump(-2);
+$('clearFmt').onclick=()=>wrapSelection({fontFamily:'var(--sheet-family)',fontSize:'var(--sheet-size)',fontFeatureSettings:'var(--sheet-features)',lineHeight:'inherit',letterSpacing:'inherit',wordSpacing:'inherit'},true);
+sheet.oninput=()=>{state.preset='custom';$('preset').value='custom';syncRoman();persist();};
+sheet.addEventListener('paste',e=>{e.preventDefault();document.execCommand('insertText',false,e.clipboardData.getData('text/plain'));});
+$('copyCss').onclick=async()=>{try {await navigator.clipboard.writeText($('cssout').textContent);$('copyCss').textContent='Sheet CSS copied';}catch{$('copyCss').textContent='Copy unavailable · select CSS below';$('cssout').parentElement.open=true;}setTimeout(()=>$('copyCss').textContent='Copy sheet CSS',2200);};
+$('doPrint').onclick=()=>window.print();
+$('reset').onclick=()=>{
+  clearTimeout(saveTimer);clearTarget();Object.assign(state,DEFAULTS);FEATURES.forEach(f=>globalFeatures[f.tag]=f.def);sheet.innerHTML=PRESETS.soliloquy;apply();
+};
+function enableRoman(label) {
+  romanAvailable=true;document.querySelectorAll('#face button').forEach(b=>b.disabled=false);
+  $('romanStatus').textContent=label;updateSelection();
+}
+$('romanFile').onchange=async e=>{
+  const file=e.target.files[0];if(!file)return;
+  $('romanStatus').textContent='Loading local roman font…';
+  try {const face=new FontFace('Doves Roman',await file.arrayBuffer());await face.load();document.fonts.add(face);enableRoman('Roman ready · '+file.name);apply();}
+  catch {$('romanStatus').textContent=romanAvailable?'Could not load that file. Previous roman font remains active.':'Could not load that font. Choose a valid OTF, TTF or WOFF file.';}
+};
+if(!restore()) sheet.innerHTML=PRESETS.soliloquy;
+apply();
+for(const [build,family] of [['trial1','Doves Italic Trial'],['trial2','Doves Italic Trial 2']]) {
+  document.fonts.load(`28px "${family}"`).then(faces=>{fontStates[build]=faces.length?'loaded':'error';updateBuildStatus();}).catch(()=>{fontStates[build]='error';updateBuildStatus();});
+}
+document.fonts.load('28px "Doves Roman"').then(faces=>{if(faces.length)enableRoman('Roman ready · installed on this device');}).catch(()=>{});
+window.addEventListener('pagehide',()=>{clearTimeout(saveTimer);save();});
+
 </script>
 </body>
 </html>
